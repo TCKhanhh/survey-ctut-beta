@@ -71,6 +71,8 @@
     <script src="{{ asset('assets/template/admin/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ asset('assets/template/admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('assets/template/admin/plugins/toastr/toastr.min.css') }}">
+
 </head>
 
 <body class="sidebar-mini">
@@ -84,30 +86,71 @@
                             <h3>Đăng nhập</h3>
                         </div>
                         <div class="card-body">
-                            <form action="" method="POST">
+                            <form action="{{ route('processLogin') }}" method="POST">
+                                @csrf
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email"
-                                        placeholder="Nhập email" required>
+                                    <div class="input-group">
+                                        <input type="email" class="form-control" id="email" name="email"
+                                            placeholder="Nhập email" value="{{ old('email') }}" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Mật khẩu</label>
-                                    <input type="password" class="form-control" id="password" name="password"
-                                        placeholder="Nhập mật khẩu" required>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="mat_khau" name="mat_khau"
+                                            placeholder="Nhập mật khẩu" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" onclick="togglePassword()">
+                                                <i class="fas fa-eye" id="togglePassword"></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
+                                <script>
+                                    function togglePassword() {
+                                        var x = document.getElementById("mat_khau");
+                                        var icon = document.getElementById("togglePassword");
+                                        if (x.type === "password") {
+                                            x.type = "text";
+                                            icon.classList.remove("fa-eye");
+                                            icon.classList.add("fa-eye-slash");
+                                        } else {
+                                            x.type = "password";
+                                            icon.classList.remove("fa-eye-slash");
+                                            icon.classList.add("fa-eye");
+                                        }
+                                    }
+                                </script>
                                 <div class="form-group">
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="remember">
                                         <label class="custom-control-label" for="remember">Ghi nhớ đăng nhập</label>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
+                                <button type="submit" class="btn btn-primary btn-block">Đăng
+                                    nhập</button>
                                 <a href="{{ route('viewRegister') }}" class="btn btn-success btn-block mt-2">Đăng
                                     ký</a>
+
                             </form>
                         </div>
                         <div class="card-footer text-center">
-                            <a href="{{ route('viewForgotPassword') }}">Quên mật khẩu?</a>
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="{{ route('viewForgotPassword') }}" class="text-muted">
+                                        <i class="fas fa-key mr-1"></i>Quên mật khẩu?
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="{{ route('viewHome') }}" class="text-primary">
+                                        <i class="fas fa-home mr-1"></i>Trang chủ
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -115,6 +158,28 @@
         </div>
     </div>
 
+
+    <script src="{{ asset('assets/template/admin/plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/template/admin/plugins/toastr/toastr.min.js') }}"></script>
+    <script>
+        // @if (session('success'))
+        //     toastr.success("{{ session('success') }}");
+        // @endif
+
+        // @if (session('error'))
+        //     toastr.error("{{ session('error') }}");
+        // @endif
+
+        @if (session('success'))
+            toastr.success("{{ session('success') }}");
+        @endif
+
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        @endif
+    </script>
 </body>
 
 </html>

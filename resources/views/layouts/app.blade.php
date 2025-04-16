@@ -80,7 +80,9 @@
         @include('components.navbar')
         @include('components.sidebar')
 
-        @yield('content')
+        <div id="main-content">
+            @yield('content')
+        </div>
 
         @include('components.footer')
 
@@ -88,7 +90,6 @@
 
 
     </div>
-
 
     {{-- script---------------------------------------------------------------------- --}}
 
@@ -128,7 +129,14 @@
     <script src="{{ asset('assets/template/admin/plugins/select2/js/select2.full.min.js') }}"></script>
 
     <script src="{{ asset('assets/template/admin/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('assets/template/admin/plugins/toastr/toastr.min.js') }}"></script> {{-- end script---------------------------------------------------------------------- --}}
+    <script src="{{ asset('assets/template/admin/plugins/toastr/toastr.min.js') }}"></script>
+
+
+    <script src="{{ asset('assets/js/customAjax.js') }}"></script>
+
+
+    @yield('scripts')
+    {{-- end script---------------------------------------------------------------------- --}}
 </body>
 
 </html>

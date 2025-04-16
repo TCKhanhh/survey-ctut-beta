@@ -3,8 +3,9 @@
 
 
 @section('content')
+<div id="main-content">
 
-    <div class="content-wrapper" style="min-height: 1302.12px; margin-top: 46px;">
+    <div class="content-wrapper" style=" margin-top: 46px;">
 
         <section class="content">
             <div class="container-fluid">
@@ -12,8 +13,8 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <ol class="breadcrumb float-sm-left">
-                                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                                <ol class="breadcrumb float-sm-left mt-2">
+                                    <li class="breadcrumb-item"><a href="{{route('viewHome')}}">Trang chủ</a></li>
                                     <li class="breadcrumb-item">Khảo sát của tôi</li>
                                     <li class="breadcrumb-item active">Lịch sử khảo sát</li>
                                 </ol>
@@ -233,5 +234,5 @@
                 </div>
         </section>
     </div>
-
+</div>
 @endsection

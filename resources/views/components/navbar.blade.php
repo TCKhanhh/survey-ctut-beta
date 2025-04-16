@@ -25,7 +25,78 @@
                     <img class="img-circle" alt="User Image" src='{{ asset('assets/imgs/logo.png') }}'>
                 </div>
             </a>
+
+
+            {{-- <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                @if (!session('user_id'))
+                    <a href="{{ route('viewLogin') }}" class="dropdown-item" style="cursor: pointer;">
+                        <i class="fa-solid fa-right-to-bracket mr-2"></i>Đăng nhập
+                    </a>
+                @else
+                    <a class="dropdown-item" style="cursor: default;">
+                        <i class="fa-solid fa-user mr-2"></i><span
+                            id="dropdownUsername">{{ session('user_name') }}</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a id='doimatkhau_admin' onclick="userChangePass_load_admin()" class="dropdown-item"
+                        style="cursor: pointer;">
+                        <i class="fas fa-key mr-2"></i>Đổi mật khẩu
+                    </a>
+                    <div class="dropdown-divider"></div>
+                
+                    <form action="{{ route('processLogout') }}" method="POST" id="logout-form">
+                        @csrf
+                        <button type="submit" class="dropdown-item"
+                            style="cursor: pointer; background: none; border: none; width: 100%; text-align: left;">
+                            <i class="fa-solid fa-right-to-bracket mr-2"></i> Đăng xuất
+                        </button>
+                    </form>
+                @endif
+            </div> --}}
+
             <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                @auth
+                    <a class="dropdown-item" style="cursor: default;">
+                        <i class="fa-solid fa-user mr-2"></i><span id="dropdownUsername">{{ Auth::user()->ho_ten }}</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a id='doimatkhau_admin' onclick="userChangePass_load_admin()" class="dropdown-item"
+                        style="cursor: pointer;">
+                        <i class="fas fa-key mr-2"></i>Đổi mật khẩu
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <form action="{{ route('processLogout') }}" method="POST" id="logout-form">
+                        @csrf
+                        <button type="submit" class="dropdown-item"
+                            style="cursor: pointer; background: none; border: none; width: 100%; text-align: left;">
+                            <i class="fa-solid fa-right-to-bracket mr-2"></i> Đăng xuất
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ route('viewLogin') }}" class="dropdown-item" style="cursor: pointer;">
+                        <i class="fa-solid fa-right-to-bracket mr-2"></i>Đăng nhập
+                    </a>
+                @endauth
+            </div>
+            {{-- <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                @guest
+                    <a href="{{ route('viewLogin') }}" class="dropdown-item" style="cursor: pointer;">
+                        <i class="fa-solid fa-right-to-bracket mr-2"></i>Đăng nhập
+                    </a>
+                @else
+                    <a id='doimatkhau_admin' onclick="userChangePass_load_admin()" class="dropdown-item"
+                        style="cursor: pointer;">
+                        <i class="fas fa-key mr-2"></i>Đổi mật khẩu
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a onclick="userLogout_admin()" class="dropdown-item" style="cursor: pointer;">
+                        <i class="fa-solid fa-right-to-bracket mr-2"></i>Đăng xuất
+                    </a>
+                @endguest
+            </div> --}}
+
+
+            {{-- <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                 <!-- <div class="dropdown-divider"></div> -->
                 <a id='doimatkhau_admin' onclick="userChangePass_load_admin()" class="dropdown-item"
                     style="cursor: pointer;">
@@ -35,7 +106,8 @@
                 <a href="dang_nhap.html" onclick="userLogout_admin()" class="dropdown-item" style="cursor: pointer;">
                     <i class="fa-solid fa-right-to-bracket mr-2"></i>Đăng xuất
                 </a>
-            </div>
+            </div> --}}
+
         </li>
 
     </ul>

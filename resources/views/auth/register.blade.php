@@ -71,6 +71,8 @@
     <script src="{{ asset('assets/template/admin/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ asset('assets/template/admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('assets/template/admin/plugins/toastr/toastr.min.css') }}">
+
 </head>
 
 <body class="sidebar-mini">
@@ -84,61 +86,135 @@
                             <h3>Đăng ký tài khoản</h3>
                         </div>
                         <div class="card-body">
-                            <form action="" method="POST">
+                            <form action="{{ route('processRegister') }}" method="POST">
+                                @csrf
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="fullname">Họ và tên</label>
-                                            <input type="text" class="form-control" id="fullname" name="fullname"
-                                                placeholder="Nhập họ và tên" required>
+                                            <label for="name">Họ và tên</label>
+                                            <input type="text" class="form-control" id="ho_ten" name="ho_ten"
+                                                placeholder="Nhập họ và tên" value="{{ old('ho_ten') }}" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="email">Email</label>
                                             <input type="email" class="form-control" id="email" name="email"
-                                                placeholder="Nhập email" required>
+                                                placeholder="Nhập email" value="{{ old('email') }}" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="phone">Số điện thoại</label>
-                                            <input type="tel" class="form-control" id="phone" name="phone"
-                                                placeholder="Nhập số điện thoại" pattern="[0-9]{10}" required>
+                                            {{-- <input type="tel" class="form-control" id="sdt" name="sdt"
+                                                placeholder="Nhập số điện thoại" pattern="[0-9]{10}"> --}}
+                                            <input type="text" class="form-control" id="sdt" name="sdt"
+                                                placeholder="Nhập số điện thoại" value="{{ old('sdt') }}">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="birthday">Ngày sinh</label>
-                                            <input type="date" class="form-control" id="birthday" name="birthday"
-                                                required>
-                                        </div>
+                                        {{-- <div class="form-group">
+                                            <label for="province">Tỉnh/Thành phố</label>
+                                            <select class="form-control select2" id="province" name="province">
+                                                <option value="">Chọn tỉnh/thành phố</option>
+
+                                            </select>
+                                        </div> --}}
+
                                     </div>
                                     <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label for="cccd">CCCD</label>
-                                            <input type="text" class="form-control" id="cccd" name="cccd"
-                                                placeholder="Nhập CCCD" pattern="[0-9]{12}" required>
+                                        {{-- <div class="form-group">
+                                            <label for="highschool">Trường THPT</label>
+                                            <select class="form-control select2" id="highschool" name="highschool">
+                                                <option value="">Chọn trường THPT</option>
+                                            </select>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="aspiration">Ngành học mong muốn</label>
+                                            <select class="form-control select2" id="aspiration" name="aspiration">
+                                                <option value="">Chọn ngành học</option>
+                                                <option value="CNTT">Công nghệ thông tin</option>
+                                                <option value="KTPM">Kỹ thuật phần mềm</option>
+                                                <option value="KTĐT">Kỹ thuật điện tử</option>
+                                            </select>
+                                        </div> --}}
                                         <div class="form-group">
                                             <label for="password">Mật khẩu</label>
-                                            <input type="password" class="form-control" id="password"
-                                                name="password" placeholder="Nhập mật khẩu" minlength="8" required>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" id="mat_khau"
+                                                    name="mat_khau" placeholder="Nhập mật khẩu" minlength="8" required>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text toggle-password"
+                                                        style="cursor: pointer;">
+                                                        <i class="fas fa-eye"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="confirmPassword">Xác nhận mật khẩu</label>
-                                            <input type="password" class="form-control" id="confirmPassword"
-                                                name="confirmPassword" placeholder="Nhập lại mật khẩu" minlength="8"
-                                                required>
+                                            <label for="password_confirmation">Xác nhận mật khẩu</label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" id="nhap_lai_mat_khau"
+                                                    name="nhap_lai_mat_khau" placeholder="Nhập lại mật khẩu"
+                                                    minlength="8" required>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text toggle-password"
+                                                        style="cursor: pointer;">
+                                                        <i class="fas fa-eye"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="terms"
                                                     required>
                                                 <label class="custom-control-label" for="terms">Tôi đồng ý với các
-                                                    điều
-                                                    khoản sử
-                                                    dụng</label>
+                                                    điều khoản sử dụng</label>
                                             </div>
                                         </div>
+                                        <script>
+                                            $(document).ready(function() {
+                                                $('.toggle-password').click(function() {
+                                                    const input = $(this).closest('.input-group').find('input');
+                                                    const icon = $(this).find('i');
+
+                                                    if (input.attr('type') === 'password') {
+                                                        input.attr('type', 'text');
+                                                        icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                                                    } else {
+                                                        input.attr('type', 'password');
+                                                        icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                                                    }
+                                                });
+                                            });
+                                        </script>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-block">Đăng ký</button>
                             </form>
+
+                            <script>
+                                $(document).ready(function() {
+                                    $('.select2').select2();
+
+                                    $('#province').change(function() {
+                                        var provinceId = $(this).val();
+                                        if (provinceId) {
+                                            $.ajax({
+                                                url: '/get-schools/' + provinceId,
+                                                type: 'GET',
+                                                success: function(data) {
+                                                    $('#highschool').empty();
+                                                    $('#highschool').append(
+                                                        '<option value="">Chọn trường THPT</option>');
+                                                    $.each(data, function(key, value) {
+                                                        $('#highschool').append('<option value="' + value.id +
+                                                            '">' + value.name + '</option>');
+                                                    });
+                                                }
+                                            });
+                                        } else {
+                                            $('#highschool').empty();
+                                            $('#highschool').append('<option value="">Chọn trường THPT</option>');
+                                        }
+                                    });
+                                });
+                            </script>
                         </div>
                         <div class="card-footer text-center">
                             <p>Đã có tài khoản? <a href="{{ route('viewLogin') }}">Đăng nhập</a></p>
@@ -148,6 +224,26 @@
             </div>
         </div>
     </div>
+
+
+    <script src="{{ asset('assets/template/admin/plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/template/admin/plugins/toastr/toastr.min.js') }}"></script>
+    {{-- <script>
+        @if (session('success'))
+            toastr.success("{{ session('success') }}");
+        @endif
+
+        @if (session('error'))
+            toastr.error("{{ session('error') }}");
+        @endif
+    </script> --}}
+    <script>
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        @endif
+    </script>
 
 </body>
 

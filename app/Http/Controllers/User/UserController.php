@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+    public function viewHome()
+    {
+        return view('user.index');
+    }
+
     public function viewAllSurvey()
     {
         return view('user.all-survey');
